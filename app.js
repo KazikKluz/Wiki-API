@@ -88,11 +88,11 @@ app.route('/articles')
 app.route('/articles/:articleTitle')
     .get(function (req, res) {
 
-        Article.findOne({title: req.params.articleTitle},function (err, foundArticle) {
+        Article.findOne({ title: req.params.articleTitle }, function (err, foundArticle) {
             if (err) {
                 res.send("There is an unspecified error");
             } else {
-                if(foundArticle){
+                if (foundArticle) {
                     res.send(foundArticle);
                 } else {
                     res.send("No article with that title found");
@@ -101,26 +101,26 @@ app.route('/articles/:articleTitle')
         });
     })
 
-    .put(function(req,res){
+    .put(function (req, res) {
         Article.update(
-            {title: req.params.articleTitle},
-            {title: req.body.title, content: req.body.content},
-            {overwrite: true},function(err){
-                if(err){
+            { title: req.params.articleTitle },
+            { title: req.body.title, content: req.body.content },
+            { overwrite: true }, function (err) {
+                if (err) {
                     console.log(err);
                     res.send("an error occured during updating database");
                 } else {
                     res.send("Article updated successfuly");
                 }
-        });
+            });
     })
 
-    .patch(function(req,res){
+    .patch(function (req, res) {
         Article.update(
-            {title: req.params.articleTitle},
-            {$set: req.body},
-            function(err){
-                if(!err){
+            { title: req.params.articleTitle },
+            { $set: req.body },
+            function (err) {
+                if (!err) {
                     res.send("Article updated succesfully");
                 } else {
                     res.send(err);
@@ -128,4 +128,15 @@ app.route('/articles/:articleTitle')
             }
         );
     })
-;
+
+    .delete(function (req, res) {
+        Article.deleteOne({ title: req.params.articleTitle },
+            function (err) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.send("Article deleted succesfully");
+                }
+            });
+    })
+    ;
